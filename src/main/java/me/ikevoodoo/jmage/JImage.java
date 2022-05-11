@@ -4,6 +4,7 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.WritableRaster;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.function.Function;
@@ -121,6 +122,20 @@ public class JImage {
         font.drawString(g, formatted, x, y);
         g.dispose();
         return this;
+    }
+
+    public byte[] toBytes() {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        try {
+            ImageIO.write(this.image, "png", baos);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return baos.toByteArray();
+    }
+
+    public void draw(Graphics g) {
+        g.drawImage(this.image, 0, 0, null);
     }
 
     private void execute(BufferedImage image, int width, int height, Function<ExecuteData, int[]> function) {
