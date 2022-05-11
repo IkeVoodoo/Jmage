@@ -36,6 +36,10 @@ public class JMage {
         Files.copy(getConnection(url).getInputStream(), output.toPath());
     }
 
+    public static Future<Optional<JImage>> read(File file) throws IOException {
+        return read(Files.newInputStream(file.toPath()));
+    }
+
     public static Future<Optional<JImage>> read(InputStream is) {
         return new Future<>() {
             private boolean done = false;
