@@ -1,2 +1,2 @@
 # Jmage
- Java Image Manipulation Library
+A Java Image Manipulation Library
