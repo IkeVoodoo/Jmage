@@ -1,6 +1,7 @@
 package me.ikevoodoo.jmage;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -14,6 +15,16 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
 public class JMage {
+
+    private static Robot robot;
+
+    static {
+        try {
+            robot = new Robot();
+        } catch (AWTException e) {
+            e.printStackTrace();
+        }
+    }
 
     private JMage() {}
 
@@ -38,6 +49,14 @@ public class JMage {
 
     public static Future<Optional<JImage>> read(File file) throws IOException {
         return read(Files.newInputStream(file.toPath()));
+    }
+
+    public static JImage screenshot(Rectangle rect) {
+        return new JImage(robot.createScreenCapture(rect));
+    }
+
+    public static JImage screenshot(Dimension dim) {
+        return screenshot(new Rectangle(dim));
     }
 
     public static Future<Optional<JImage>> read(InputStream is) {
