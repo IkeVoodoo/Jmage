@@ -13,6 +13,14 @@ public class JImage {
     private BufferedImage image;
 
     public JImage(BufferedImage image) {
+        if(image.getColorModel().getNumComponents() < 4) {
+            BufferedImage img = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
+            Graphics g = img.getGraphics();
+            g.drawImage(image, 0, 0, null);
+            g.dispose();
+            this.image = img;
+            return;
+        }
         this.image = image;
     }
 
@@ -30,10 +38,9 @@ public class JImage {
     public JImage mask(JImage mask) {
         int width = Math.min(this.image.getWidth(), mask.image.getWidth());
         int height = Math.min(this.image.getHeight(), mask.image.getHeight());
-        BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         WritableRaster maskRaster = mask.image.getRaster();
         WritableRaster imageRaster = image.getRaster();
-        execute(img, width, height, data -> {
+        execute(this.image, width, height, data -> {
             maskRaster.getPixel(data.x, data.y, data.pixels);
             if(data.pixels[0] == 255 && data.pixels[1] == 255 && data.pixels[2] == 255)
                 imageRaster.getPixel(data.x, data.y, data.pixels);
@@ -48,7 +55,6 @@ public class JImage {
             }
             return data.pixels;
         });
-        this.image = img;
         return this;
     }
 
@@ -88,6 +94,22 @@ public class JImage {
         Graphics g = this.image.getGraphics();
         g.drawImage(image.image, x, y, null);
         g.dispose();
+        return this;
+    }
+
+    public JImage flipHorizontal() {
+        Graphics g = this.image.getGraphics();
+        g.drawImage(this.image, 0, 0, this.image.getWidth(), this.image.getHeight(), this.image.getWidth(), 0, 0, this.image.getHeight(), null);
+        g.dispose();
+        return this;
+    }
+
+    public JImage flipVertical() {
+        BufferedImage img = new BufferedImage(this.image.getWidth(), this.image.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        Graphics g = img.getGraphics();
+        g.drawImage(this.image, 0, 0, this.image.getWidth(), this.image.getHeight(), 0, this.image.getHeight(), this.image.getWidth(), 0, null);
+        g.dispose();
+        this.image = img;
         return this;
     }
 
