@@ -32,6 +32,10 @@ public class JMage {
         return JMage.read(getConnection(url).getInputStream());
     }
 
+    public static Future<Optional<JImage>> read(URL url) throws IOException {
+        return JMage.read(getConnection(url).getInputStream());
+    }
+
     public static Stream<Future<Optional<JImage>>> read(String... urls) {
         return Stream.of(urls).map(url -> {
             try {
@@ -100,8 +104,11 @@ public class JMage {
     }
 
     private static HttpURLConnection getConnection(String url) throws IOException {
-        URL u = new URL(url);
-        HttpURLConnection conn = (HttpURLConnection) u.openConnection();
+        return getConnection(new URL(url));
+    }
+
+    private static HttpURLConnection getConnection(URL url) throws IOException {
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setInstanceFollowRedirects(true);
         conn.setConnectTimeout(5000);
         conn.setReadTimeout(5000);
@@ -109,7 +116,7 @@ public class JMage {
         conn.setRequestProperty("accept", "*/*");
         conn.setRequestProperty("accept-encoding", "gzip, deflate, br");
         conn.setRequestProperty("keep-alive", "true");
-        conn.setRequestProperty("host", u.getHost());
+        conn.setRequestProperty("host", url.getHost());
         conn.connect();
         return conn;
     }

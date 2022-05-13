@@ -124,9 +124,16 @@ public class JImage {
         for (int i = 0; i < lines.length; i++) {
             font.drawString(g, lines[i], x, y + i * font.getSize());
         }
-        //font.drawString(g, formatted, x, y);
         g.dispose();
         return this;
+    }
+
+    public JImage copy() {
+        BufferedImage img = new BufferedImage(this.image.getWidth(), this.image.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        Graphics g = img.getGraphics();
+        g.drawImage(this.image, 0, 0, null);
+        g.dispose();
+        return new JImage(img);
     }
 
     public byte[] toBytes() {
