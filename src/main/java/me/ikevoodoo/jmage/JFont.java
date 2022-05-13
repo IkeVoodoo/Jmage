@@ -26,4 +26,8 @@ public class JFont {
         g.drawString(text, x, y);
     }
 
+    public int getSize() {
+        return font.getSize();
+    }
+
 }

@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.function.Function;
 
+@SuppressWarnings("unused")
 public class JImage {
 
     private BufferedImage image;
@@ -119,7 +120,11 @@ public class JImage {
         String formatted = text;
         for (int i = 0; i < args.length; i++)
             formatted = formatted.replace("{" + i + "}", args[i].toString());
-        font.drawString(g, formatted, x, y);
+        String[] lines = formatted.split("\n");
+        for (int i = 0; i < lines.length; i++) {
+            font.drawString(g, lines[i], x, y + i * font.getSize());
+        }
+        //font.drawString(g, formatted, x, y);
         g.dispose();
         return this;
     }
@@ -164,8 +169,9 @@ public class JImage {
         return "JImage[image=" + this.image + "]";
     }
 
-    private class ExecuteData {
-        public int x, y;
+    private static class ExecuteData {
+        public int x;
+        public int y;
         public int[] pixels;
     }
 }
