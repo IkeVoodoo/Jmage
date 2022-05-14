@@ -4,9 +4,7 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.WritableRaster;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.function.Function;
 
 @SuppressWarnings("unused")
@@ -134,6 +132,20 @@ public class JImage {
         g.drawImage(this.image, 0, 0, null);
         g.dispose();
         return new JImage(img);
+    }
+
+    public JImage write(DataOutputStream os) throws IOException {
+        byte[] bytes = toBytes();
+        os.writeInt(bytes.length);
+        os.write(bytes);
+        return this;
+    }
+
+    public static JImage read(DataInputStream is) throws IOException {
+        int length = is.readInt();
+        byte[] bytes = new byte[length];
+        is.readFully(bytes);
+        return new JImage(ImageIO.read(new ByteArrayInputStream(bytes)));
     }
 
     public byte[] toBytes() {
