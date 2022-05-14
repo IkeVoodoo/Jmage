@@ -1,10 +1,8 @@
 package me.ikevoodoo.jmage.memes;
 
-import me.ikevoodoo.jmage.JFont;
 import me.ikevoodoo.jmage.JImage;
 import me.ikevoodoo.jmage.JMage;
 
-import java.awt.*;
 import java.io.*;
 import java.net.URL;
 import java.util.HashMap;
@@ -75,26 +73,6 @@ public class JMeme {
                 metadata.put(in.readUTF(), JTextData.read(in));
             return new JMeme(image, metadata);
         }
-    }
-
-    public static void main(String[] args) throws IOException, ExecutionException, InterruptedException {
-        HashMap<String, JTextData> metadata = new HashMap<>();
-        metadata.put("top", new JTextData(new JFont("Comic Sans MS", 64), new Point(400, 100)));
-        metadata.put("bottom", new JTextData(new JFont("Comic Sans MS", 64), new Point(400, 470)));
-        metadata.put("footer", new JTextData(new JFont("Comic Sans MS", 32), new Point(400, 750)));
-        JMeme meme = new JMeme(
-                "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fmemegenerator.net%2Fimg%2Fimages%2F71690444.jpg&f=1&nofb=1",
-                metadata);
-        System.out.println(meme);
-        meme.saveTo(new File("meme.jmeme"));
-        JMeme meme2 = JMeme.loadFrom(new File("meme.jmeme"));
-        System.out.println(meme2);
-        meme2.getImage(
-                "top", "hey",
-                "bottom", "there",
-                "footer", "footer"
-        ).write("meme56.png");
-        System.out.println(meme2.equals(meme));
     }
 
     @Override

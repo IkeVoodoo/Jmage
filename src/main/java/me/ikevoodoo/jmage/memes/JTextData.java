@@ -1,7 +1,6 @@
 package me.ikevoodoo.jmage.memes;
 
 import me.ikevoodoo.jmage.JFont;
-import me.ikevoodoo.jmage.JUtils;
 
 import java.awt.*;
 import java.io.DataInputStream;
