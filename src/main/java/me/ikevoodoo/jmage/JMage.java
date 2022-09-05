@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
@@ -47,8 +48,12 @@ public class JMage {
         });
     }
 
+    public static void pipe(String url, Path output) throws IOException {
+        Files.copy(getConnection(url).getInputStream(), output);
+    }
+
     public static void pipe(String url, File output) throws IOException {
-        Files.copy(getConnection(url).getInputStream(), output.toPath());
+        JMage.pipe(url, output.toPath());
     }
 
     public static Future<Optional<JImage>> read(File file) throws IOException {
